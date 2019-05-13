@@ -44,6 +44,10 @@ public class Webserver extends CordovaPlugin {
             this.sendResponse(args, callbackContext);
             return true;
         }
+        if ("getIpAddress".equals(action)) {
+            this.getIpAddress(args, callbackContext);
+            return true;
+        }
         return false;  // Returning false results in a "MethodNotFound" error.
     }
 
@@ -115,6 +119,24 @@ public class Webserver extends CordovaPlugin {
     private void onRequest(JSONArray args, CallbackContext callbackContext) {
         this.onRequestCallbackContext = callbackContext;
         PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
+        pluginResult.setKeepCallback(true);
+        this.onRequestCallbackContext.sendPluginResult(pluginResult);
+    }
+
+    /**
+     * Return IP address of device on which the webserver can be reached
+     * @param args
+     * @param callbackContext
+     */
+    private void getIpAddress(JSONArray args, CallbackContext callbackContext){
+        this.onRequestCallbackContext = callbackContext;
+
+        if (this.nanoHTTPDWebserver == null) {
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, "Webserver not started"));
+            return;
+        }
+
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, this.nanoHTTPDWebserver.getIpAddress(this.cordova.getActivity().getApplicationContext()));
         pluginResult.setKeepCallback(true);
         this.onRequestCallbackContext.sendPluginResult(pluginResult);
     }

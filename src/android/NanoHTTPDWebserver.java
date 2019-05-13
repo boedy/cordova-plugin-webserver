@@ -1,7 +1,9 @@
 package org.apache.cordova.plugin;
 
 
+import android.content.Context;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
@@ -13,6 +15,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.nio.ByteOrder;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,6 +26,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import fi.iki.elonen.NanoHTTPD;
+
+import static android.content.Context.WIFI_SERVICE;
 
 public class NanoHTTPDWebserver extends NanoHTTPD {
 
@@ -261,5 +269,27 @@ public class NanoHTTPDWebserver extends NanoHTTPD {
             }
             return response;
         }
+    }
+
+    public String getIpAddress(Context context) {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
+        int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
+
+        // Convert little-endian to big-endianif needed
+        if (ByteOrder.nativeOrder().equals(ByteOrder.LITTLE_ENDIAN)) {
+            ipAddress = Integer.reverseBytes(ipAddress);
+        }
+
+        byte[] ipByteArray = BigInteger.valueOf(ipAddress).toByteArray();
+
+        String ipAddressString;
+        try {
+            ipAddressString = InetAddress.getByAddress(ipByteArray).getHostAddress();
+        } catch (UnknownHostException ex) {
+            Log.e(this.getClass().getName(), "Unable to get host address.");
+            ipAddressString = null;
+        }
+
+        return ipAddressString;
     }
 }
