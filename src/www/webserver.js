@@ -5,6 +5,7 @@ const START_FUNCTION = 'start';
 const ONREQUEST_FUNCTION = 'onRequest';
 const SENDRESPONSE_FUNCION = 'sendResponse';
 const STOP_FUNCTION = 'stop';
+const IPADDRESS_FUNCTION = 'getIpAddress';
 
 export function start(success_callback, error_callback, port) {
   let params = [];
@@ -51,6 +52,16 @@ export function stop(success_callback, error_callback) {
     error_callback,
     WEBSERVER_CLASS,
     STOP_FUNCTION,
+    []
+  );
+}
+
+export function getIpAddress(success_callback, error_callback) {
+  exec(
+    success_callback,
+    error_callback,
+    WEBSERVER_CLASS,
+    IPADDRESS_FUNCTION,
     []
   );
 }

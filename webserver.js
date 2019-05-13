@@ -7,6 +7,7 @@ exports.start = start;
 exports.onRequest = onRequest;
 exports.sendResponse = sendResponse;
 exports.stop = stop;
+exports.getIpAddress = getIpAddress;
 
 var _exec = require('cordova/exec');
 
@@ -19,6 +20,7 @@ var START_FUNCTION = 'start';
 var ONREQUEST_FUNCTION = 'onRequest';
 var SENDRESPONSE_FUNCION = 'sendResponse';
 var STOP_FUNCTION = 'stop';
+var IPADDRESS_FUNCTION = 'getIpAddress';
 
 function start(success_callback, error_callback, port) {
   var params = [];
@@ -40,4 +42,8 @@ function sendResponse(requestId, params, success_callback, error_callback) {
 
 function stop(success_callback, error_callback) {
   (0, _exec2.default)(success_callback, error_callback, WEBSERVER_CLASS, STOP_FUNCTION, []);
+}
+
+function getIpAddress(success_callback, error_callback) {
+  (0, _exec2.default)(success_callback, error_callback, WEBSERVER_CLASS, IPADDRESS_FUNCTION, []);
 }

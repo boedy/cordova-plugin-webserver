@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <plugin xmlns="http://cordova.apache.org/ns/plugins/1.0"
     id="cordova-plugin-webserver"
-    version="1.1.0">
+    version="1.2.0">
   <engines>
     <engine name="cordova" version=">=6.5.0" />
   </engines>
@@ -19,6 +19,9 @@
     <framework src="org.nanohttpd:nanohttpd:+" />
     <source-file src="src/android/Webserver.java" target-dir="src/org/apache/cordova/plugin"/>
     <source-file src="src/android/NanoHTTPDWebserver.java" target-dir="src/org/apache/cordova/plugin"/>
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+      <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    </config-file>
     <config-file target="config.xml" parent="/*">
       <feature name="Webserver">
         <param name="android-package" value="org.apache.cordova.plugin.Webserver"/>
