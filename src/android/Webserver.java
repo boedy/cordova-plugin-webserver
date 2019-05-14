@@ -129,15 +129,12 @@ public class Webserver extends CordovaPlugin {
      * @param callbackContext
      */
     private void getIpAddress(JSONArray args, CallbackContext callbackContext){
-        this.onRequestCallbackContext = callbackContext;
-
         if (this.nanoHTTPDWebserver == null) {
             callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, "Webserver not started"));
             return;
         }
 
         PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, this.nanoHTTPDWebserver.getIpAddress(this.cordova.getActivity().getApplicationContext()));
-        pluginResult.setKeepCallback(true);
-        this.onRequestCallbackContext.sendPluginResult(pluginResult);
+        callbackContext.sendPluginResult(pluginResult);
     }
 }
